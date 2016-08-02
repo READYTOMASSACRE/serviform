@@ -130,6 +130,23 @@ class BxIblockProperty extends \serviform\FieldBase
 			return empty($this->fieldParams['MULTIPLE']) || $this->fieldParams['MULTIPLE'] !== 'Y'
 				? reset($del)
 				: $del;
+		} elseif (
+			$this->fieldParams['PROPERTY_TYPE'] == 'F'
+			&& isset($_REQUEST[$this->getNameChainString() . '_del'])
+			&& !isset($_REQUEST[$this->getNameChainString()][0]['name'])
+		){
+			$del = [];
+			foreach ($_REQUEST[$this->getNameChainString() . '_del'] as $key => $item) {
+				$del[$key] = ['del' => 'Y'];
+			}
+			if (!empty($_REQUEST[$this->getNameChainString()])) {
+				foreach ($_REQUEST[$this->getNameChainString()] as $key => $val) {
+					if (empty($del[$key])) $del[$key] = $val;
+				}
+			}
+			return empty($this->fieldParams['MULTIPLE']) || $this->fieldParams['MULTIPLE'] !== 'Y'
+				? reset($del)
+				: $del;
 		} elseif ($this->fieldParams['PROPERTY_TYPE'] == 'F' && !empty($_FILES[$this->getName()])) {
 			$res = [];
 			foreach ($_FILES[$this->getName()] as $property => $ar) {
