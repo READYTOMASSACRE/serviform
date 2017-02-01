@@ -160,9 +160,9 @@ class BxIblockProperty extends \serviform\FieldBase
 			$val = parent::getValue();
 			if (is_array($val)) {
 				foreach ($val as $key => $v)
-					$val[$key] = (float) str_replace(',', '.', $v);
+                    $val[$key] = (float) str_replace(',', '.', preg_replace('/[^0-9\.,]/', '', $v));
 			} else {
-				$val = (float) str_replace(',', '.', $val);
+                $val = (float) str_replace(',', '.', preg_replace('/[^0-9\.,]/', '', $val));
 			}
 			return $val;
 		} else {
